@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeChat | GenZ Meet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Space Grotesk', sans-serif; background: #0f172a; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .video-card { transition: all 0.3s ease; border-radius: 24px; box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
+        .glow-button:hover { box-shadow: 0 0 15px #8b5cf6; transform: translateY(-2px); }
+        /* Video Filter Styles */
+        .sepia { filter: sepia(1); }
+        .grayscale { filter: grayscale(1); }
+        .invert { filter: invert(1); }
+        .blur { filter: blur(5px); }
+    </style>
+</head>
+<body class="text-white overflow-hidden">
+
+    <div class="absolute top-[-10%] left-[20%] w-[400px] h-[400px] bg-purple-600/20 rounded-full blur-[120px]"></div>
+
+    <div class="relative z-10 flex flex-col h-screen p-4 md:p-6 gap-6">
+        
+        <header class="flex justify-between items-center glass p-4 rounded-3xl">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-gradient-to-tr from-purple-500 to-pink-500 rounded-lg animate-pulse"></div>
+                <h1 class="text-2xl font-bold tracking-tighter">VIBE<span class="text-purple-400">CHAT</span></h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="hidden md:block bg-white/10 px-4 py-2 rounded-2xl text-xs border border-white/10">
+                    My ID: <span id="my-id" class="text-purple-300 font-mono tracking-widest">---</span>
+                </div>
+                <div class="flex gap-2">
+                    <input id="remote-id" type="text" placeholder="Paste vibe code..." class="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 ring-purple-500">
+                    <button onclick="connectToFriend()" class="bg-purple-600 glow-button px-6 py-2 rounded-xl text-sm font-bold transition-all">Join Vibe</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex flex-1 gap-6 overflow-hidden">
+            <main class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 relative">
+                <div class="video-card relative bg-black/40 overflow-hidden group">
+                    <video id="local-video" autoplay muted class="w-full h-full object-cover transition-all duration-500"></video>
+                    <div class="absolute bottom-4 left-4 glass px-3 py-1 rounded-full text-xs">Aap (You)</div>
+                </div>
+                <div class="video-card relative bg-black/40 overflow-hidden group border border-purple-500/30">
+                    <video id="remote-video" autoplay class="w-full h-full object-cover"></video>
+                    <div class="absolute bottom-4 left-4 glass px-3 py-1 rounded-full text-xs">Bestie (Remote)</div>
+                </div>
+            </main>
+
+            <aside class="w-80 glass rounded-3xl flex flex-col hidden lg:flex border-l border-white/5">
+                <div class="p-5 border-b border-white/10 font-bold text-purple-400 flex items-center justify-between">
+                    Live Chat <span class="w-2 h-2 bg-green-500 rounded-full animate-ping"></span>
+                </div>
+                <div id="chat-box" class="flex-1 p-4 overflow-y-auto space-y-3 custom-scrollbar text-sm"></div>
+                <div class="p-4 flex gap-2">
+                    <input id="chat-input" type="text" placeholder="Type a vibe..." class="flex-1 bg-white/5 rounded-2xl px-4 py-3 text-xs focus:outline-none focus:ring-1 ring-purple-400">
+                    <button onclick="sendMessage()" class="p-3 bg-purple-600 rounded-2xl glow-button">🚀</button>
+                </div>
+            </aside>
+        </div>
+
+        <footer class="flex justify-center items-center gap-4 py-2">
+            <div class="glass px-6 py-4 rounded-full flex items-center gap-6 shadow-2xl">
+                <button onclick="toggleAudio()" id="audio-btn" class="hover:scale-125 transition">🎤</button>
+                <button onclick="toggleVideo()" id="video-btn" class="hover:scale-125 transition">📸</button>
+                <button onclick="startScreenShare()" class="hover:scale-125 transition">🖥️</button>
+                <div class="h-6 w-[1px] bg-white/20 mx-2"></div>
+                <select onchange="applyFilter(this.value)" class="bg-transparent text-xs focus:outline-none text-purple-300 font-bold cursor-pointer">
+                    <option value="none">✨ No Filter</option>
+                    <option value="sepia">🎞️ Vintage</option>
+                    <option value="grayscale">🌑 Dark</option>
+                    <option value="invert">🌈 Trippy</option>
+                    <option value="blur">🌫️ Ghost</option>
+                </select>
+                <div class="h-6 w-[1px] bg-white/20 mx-2"></div>
+                <button onclick="recordSession()" class="text-red-500 hover:scale-110 transition font-bold text-xs">REC ●</button>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
